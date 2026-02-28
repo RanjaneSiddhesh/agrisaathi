@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AgriSaathi Marketplace</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/marketplace.css">
+</head>
+<body>
+
+<header>
+  <h1>🌾 AgriSaathi Marketplace</h1>
+  <p>Buy & Sell Crops and Farm Equipment</p>
+</header>
+
+<!-- LOGIN INFO -->
+<div class="login-info">
+  Logged in as: <b>Farmer – Satara</b>
+</div>
+
+<!-- BUY / SELL OPTIONS -->
+<section class="choice">
+  <button onclick="showSection('buy')">🛒 Buy Products</button>
+  <button onclick="showSection('sell')">➕ Sell Product</button>
+</section>
+
+<!-- BUY SECTION -->
+<section id="buySection" class="hidden">
+  <h2>Available Products</h2>
+
+  <div class="filters">
+    <input type="text" id="searchBox" placeholder="Search product">
+    <select id="categoryFilter">
+      <option value="all">All</option>
+      <option value="crop">Crops</option>
+      <option value="equipment">Equipment</option>
+    </select>
+  </div>
+
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- SELL SECTION -->
+<section id="sellSection" class="hidden">
+  <h2>Sell Your Product</h2>
+
+  <div class="sell-form">
+    <input id="sName" placeholder="Product Name">
+    <input id="sPrice" type="number" placeholder="Price">
+    <input id="sPlace" placeholder="City (Satara, Sangli)">
+    <input id="sContact" placeholder="Contact Number">
+    
+    <select id="sCategory">
+      <option value="crop">Crop (Per Quintal)</option>
+      <option value="equipment">Equipment</option>
+    </select>
+
+    <select id="sCondition">
+      <option value="new">New</option>
+      <option value="used">Used</option>
+    </select>
+
+    <input id="sYear" placeholder="Used Year (if applicable)">
+    <input id="sImage" placeholder="Image URL">
+
+    <button onclick="addProduct()">Add Product</button>
+  </div>
+</section>
+
+<script src="/static/js/marketplace.js"></script>
+</body>
+</html>

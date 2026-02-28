@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgriSaathi - शेतकऱ्यांचा AI सहाय्यक</title>
+
+  <!-- Icons + Font -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body data-theme="light">
+
+  <!-- Background -->
+  <div class="bg">
+    <div class="bg-overlay"></div>
+    <div class="bg-blobs">
+      <span class="blob b1"></span>
+      <span class="blob b2"></span>
+      <span class="blob b3"></span>
+    </div>
+  </div>
+
+  <!-- Language hidden value -->
+  <input type="hidden" id="langSelect" value="mr">
+
+  <main class="app">
+
+    <!-- Header -->
+    <header class="topbar glass">
+      <div class="topbar-left">
+        <div class="logo">
+          <i class="fa-solid fa-tractor"></i>
+        </div>
+        <div class="title-wrap">
+          <div class="app-title">AgriSaathi AI</div>
+          <div class="app-status">
+            <span class="status-dot"></span>
+            <span id="statusText">Online (मराठी)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <button class="lang-btn active" id="mrBtn" title="मराठी">
+          🇮🇳 Marathi
+        </button>
+
+        <button class="lang-btn" id="enBtn" title="English">
+          EN English
+        </button>
+
+        <button class="icon-btn" id="themeBtn" title="Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Chat -->
+    <section class="chat glass">
+
+      <!-- Quick Replies -->
+      <div class="quick-replies" id="quickReplies">
+        <button class="quick-btn" data-query="टोमॅटोला रोग झाला आहे उपाय सांगा">🍅 Tomato disease</button>
+        <button class="quick-btn" data-query="गहू पेरणी वेळ कधी आहे?">🌾 Sowing time</button>
+        <button class="quick-btn" data-query="खत व्यवस्थापन सांगा">🌱 Fertilizer advice</button>
+        <button class="quick-btn" data-query="शेततळे योजना माहिती द्या">💧 Farm pond scheme</button>
+      </div>
+
+      <!-- Messages -->
+      <div class="chatbox" id="chatbox">
+
+        <div class="msg bot fade-in">
+          <div class="avatar bot-avatar">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+
+          <div class="bubble">
+            <div class="bubble-top">
+              <span class="name">AgriSaathi</span>
+              <span class="time">Just now</span>
+            </div>
+
+            <div class="bubble-text">
+              नमस्कार शेतकरी बंधू! 👋<br>
+              मी <b>AgriSaathi AI</b> आहे.<br><br>
+              ✅ मराठी / English निवडा आणि प्रश्न विचारा.<br>
+              <b>Tip:</b> प्रश्न छोटा आणि स्पष्ट विचारा.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Typing Indicator -->
+      <div class="typing" id="typingIndicator" style="display:none;">
+        <div class="avatar bot-avatar">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <div class="typing-bubble">
+          <div class="dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="typing-text">AgriSaathi विचार करत आहे...</span>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="input-area">
+
+        <div class="input-left">
+          <button class="icon-btn" id="micBtn" title="Voice Input (Coming Soon)">
+            <i class="fa-solid fa-microphone"></i>
+          </button>
+
+          <button class="icon-btn" id="attachBtn" title="Upload Image (Coming Soon)">
+            <i class="fa-solid fa-camera"></i>
+          </button>
+
+          <input type="file" id="imageInput" accept="image/*" style="display:none;" />
+        </div>
+
+        <div class="input-mid">
+          <input
+            type="text"
+            id="messageText"
+            class="message-input"
+            placeholder="प्रश्न टाइप करा... | Type your question..."
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="input-right">
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>Send</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Voice output toggle -->
+      <div class="voice-controls">
+        <label>
+          <input type="checkbox" id="voiceOutToggle" checked>
+          🔊 Voice Output (Read Answer)
+        </label>
+      </div>
+
+      <div class="footer-note">
+        <i class="fa-solid fa-circle-info"></i>
+        This answer is based on documents. Please consult agriculture experts if needed.
+      </div>
+
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
+  <!-- UI Controls Script -->
+  <script>
+    const langSelect = document.getElementById("langSelect");
+    const mrBtn = document.getElementById("mrBtn");
+    const enBtn = document.getElementById("enBtn");
+
+    mrBtn.addEventListener("click", () => {
+      langSelect.value = "mr";
+      mrBtn.classList.add("active");
+      enBtn.classList.remove("active");
+      document.getElementById("statusText").innerText = "Online (मराठी)";
+    });
+
+    enBtn.addEventListener("click", () => {
+      langSelect.value = "en";
+      enBtn.classList.add("active");
+      mrBtn.classList.remove("active");
+      document.getElementById("statusText").innerText = "Online (English)";
+    });
+
+    // Theme toggle
+    const themeBtn = document.getElementById("themeBtn");
+    themeBtn.addEventListener("click", () => {
+      const body = document.body;
+      const current = body.getAttribute("data-theme");
+      body.setAttribute("data-theme", current === "light" ? "dark" : "light");
+    });
+
+    // Quick replies
+    document.querySelectorAll(".quick-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.getElementById("messageText").value = btn.dataset.query;
+        document.getElementById("messageText").focus();
+      });
+    });
+
+    // Enter to send
+    document.getElementById("messageText").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+
+</body>
+</html>
